@@ -6,6 +6,7 @@ for (const script of [
   'guestlist-ui-actions-patch.mjs',
   'guestlist-ui-markup-patch.mjs',
   'guestlist-style-patch.mjs',
+  'countdown-patch.mjs',
 ]) {
   execFileSync('node', [script], { stdio: 'inherit' });
 }
