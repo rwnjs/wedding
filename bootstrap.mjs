@@ -43,4 +43,32 @@ execFileSync('tar',['-xzf','.source.tar.gz','-C','.source']);
 const src=path.join('.source','Noemelyn-Rwin-Vercel');
 for(const name of fs.readdirSync(src)) fs.cpSync(path.join(src,name),name,{recursive:true,force:true});
 console.log('SOURCE_SHA256='+expected.toString('hex'));
+const venueMap = "https://maps.app.goo.gl/kXfRMJiiNxu8ARf89";
+const copyPath = path.join(process.cwd(), 'components/wedding/invitation-copy.json');
+const copyJson = JSON.parse(fs.readFileSync(copyPath, 'utf8'));
+const reception = copyJson.sections.find((section) => section.key === 'reception');
+if (reception?.text?.[0]) { reception.text[0].text = 'Kulyawan Hall'; reception.text[0].normalized_whitespace = 'Kulyawan Hall'; }
+if (reception?.text?.[1]) {
+  reception.text[1].text = '15 Layang-Layang St., Mira Nila Homes\nQuezon City 1107, Metro Manila';
+  reception.text[1].normalized_whitespace = '15 Layang-Layang St., Mira Nila Homes Quezon City 1107, Metro Manila';
+}
+fs.writeFileSync(copyPath, JSON.stringify(copyJson, null, 2) + '\n');
+const pagePath = path.join(process.cwd(), 'app/page.tsx');
+let pageSource = fs.readFileSync(pagePath, 'utf8');
+pageSource = pageSource.replace(
+  'const receptionMap = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(copy.reception[1]);',
+  'const receptionMap = "' + venueMap + '";'
+);
+pageSource = pageSource.replace(
+  '15 Layang-Layang St., Mira-Nila Homes<br />Barangay Pasong Tamo, Quezon City',
+  '15 Layang-Layang St., Mira Nila Homes<br />Quezon City 1107, Metro Manila'
+);
+fs.writeFileSync(pagePath, pageSource);
+const calPath = path.join(process.cwd(), 'app/api/calendar/route.ts');
+let calSource = fs.readFileSync(calPath, 'utf8');
+calSource = calSource.replace(
+  'Reception: 15 Layang-Layang St., Mira-Nila Homes, Barangay Pasong Tamo, Quezon City.',
+  'Reception: Kulyawan Hall, 15 Layang-Layang St., Mira Nila Homes, Quezon City 1107, Metro Manila.'
+);
+fs.writeFileSync(calPath, calSource);
 execFileSync('npx',['--yes','npm@10.9.2','install','--legacy-peer-deps','--no-audit','--no-fund','--package-lock=false'],{stdio:'inherit'});
