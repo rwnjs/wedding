@@ -12,4 +12,5 @@ for (const patch of ['blob-rsvp-store.ts', 'rsvp-server.ts', 'rsvp-roster.ts']) 
     path.join(process.cwd(), 'lib', patch),
   );
 }
+fs.rmSync(path.join(process.cwd(), 'deploy-patches'), { recursive: true, force: true });
 console.log('Private Blob RSVP backend patch applied.');
