@@ -43,4 +43,4 @@ execFileSync('tar',['-xzf','.source.tar.gz','-C','.source']);
 const src=path.join('.source','Noemelyn-Rwin-Vercel');
 for(const name of fs.readdirSync(src)) fs.cpSync(path.join(src,name),name,{recursive:true,force:true});
 console.log('SOURCE_SHA256='+expected.toString('hex'));
-execFileSync('npm',['ci'],{stdio:'inherit'});
+execFileSync('npx',['--yes','npm@10.9.2','ci'],{stdio:'inherit'});
