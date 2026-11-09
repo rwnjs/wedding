@@ -60,7 +60,7 @@ export function WeddingCountdown() {
   ];
 
   const label = time
-    ? \`${time.days} days, ${time.hours} hours, ${time.minutes} minutes, and ${time.seconds} seconds until the wedding\`
+    ? time.days + " days, " + time.hours + " hours, " + time.minutes + " minutes, and " + time.seconds + " seconds until the wedding"
     : "Wedding countdown loading";
 
   return (
