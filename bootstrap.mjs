@@ -44,4 +44,3 @@ const src=path.join('.source','Noemelyn-Rwin-Vercel');
 for(const name of fs.readdirSync(src)) fs.cpSync(path.join(src,name),name,{recursive:true,force:true});
 console.log('SOURCE_SHA256='+expected.toString('hex'));
 execFileSync('npm',['ci'],{stdio:'inherit'});
-execFileSync('npm',['run','build'],{stdio:'inherit'});
